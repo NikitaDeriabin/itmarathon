@@ -30,6 +30,17 @@ namespace Epam.ItMarathon.ApiService.Api.Dto.Mapping
                         ? user.Wishes.Select(wish => new WishDto { Name = wish.Name, InfoLink = wish.InfoLink })
                         : new List<WishDto>());
                 });
+            
+            CreateMap<User, UserDeleteResponse>()
+                .ForMember(dest => dest.UserCode, opt => opt.MapFrom(user => user.AuthCode))
+                .ForMember(dest => dest.Email, opt => opt.MapFrom(user => user.Email ?? string.Empty))
+                .ForMember(dest => dest.Interests, opt => opt.MapFrom(user => user.Interests ?? string.Empty))
+                .ForMember(dest => dest.WishList, opt =>
+                {
+                    opt.MapFrom(user => user.Wishes.Any()
+                        ? user.Wishes.Select(wish => new WishDto { Name = wish.Name, InfoLink = wish.InfoLink })
+                        : new List<WishDto>());
+                });
         }
     }
 }
