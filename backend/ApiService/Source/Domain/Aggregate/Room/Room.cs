@@ -2,6 +2,7 @@
 using Epam.ItMarathon.ApiService.Domain.Abstract;
 using Epam.ItMarathon.ApiService.Domain.Builders;
 using Epam.ItMarathon.ApiService.Domain.Entities.User;
+using Epam.ItMarathon.ApiService.Domain.Policies.DeletePolicies;
 using Epam.ItMarathon.ApiService.Domain.Shared.ValidationErrors;
 using FluentValidation;
 using FluentValidation.Internal;
@@ -292,7 +293,53 @@ namespace Epam.ItMarathon.ApiService.Domain.Aggregate.Room
 
             return this;
         }
+        
+        public Result<User, ValidationResult> DeleteUserWithId(ulong userId, string userCode)
+        {
+            // Check if room is closed.
+            var roomCanBeModifiedResult = CheckRoomCanBeModified();
+            if (roomCanBeModifiedResult.IsFailure)
+            {
+                return Result.Failure<User, ValidationResult>(roomCanBeModifiedResult.Error); 
+            }
+            
+            var userToDelete = Users.FirstOrDefault(user => user.Id == userId);
+            // Check if user with userId not found
+            if (userToDelete is null)
+            {
+                return Result.Failure<User, ValidationResult>(new NotFoundError([
+                    new ValidationFailure(nameof(Id), $"User with such id not found in this room.")]));
+            }
 
+            var admin = Users.FirstOrDefault(user => user.IsAdmin)!;
+            // Check if user is not Admin
+            if (admin.AuthCode != userCode)
+            {
+                return Result.Failure<User, ValidationResult>(new ForbiddenError([
+                    new ValidationFailure(string.Empty, "Denied: not enough rights. " +
+                                                        "Only admin can delete user.")])); 
+            }
+
+            var policyResult = DeleteUserPolicy.Validate(admin, userToDelete);
+            // Additional checks. See DeleteUserPolicy.cs 
+            if (policyResult.IsFailure)
+            {
+                return Result.Failure<User, ValidationResult>(new ForbiddenError([
+                    new ValidationFailure(string.Empty, policyResult.Error)
+                ]));
+            }
+            
+            var isRemoved = Users.Remove(userToDelete);
+            if (!isRemoved)
+            {
+                return Result.Failure<User, ValidationResult>(new BadRequestError([
+                    new ValidationFailure(nameof(Id), $"User with such id was not deleted.")
+                ]));
+            }
+
+            return userToDelete;
+        }
+        
         private Result<bool, ValidationResult> CheckRoomCanBeModified()
         {
             if (ClosedOn is not null)

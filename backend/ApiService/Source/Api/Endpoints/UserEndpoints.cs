@@ -62,10 +62,20 @@ namespace Epam.ItMarathon.ApiService.Api.Endpoints
                 })
                 .WithSummary("Create and add user to a room.")
                 .WithDescription("Return created user info.");
+            
+            _ = root.MapDelete("{id:long}", DeleteUserWithId)
+                .AddEndpointFilterFactory(ValidationFactoryFilter.GetValidationFactory)
+                .Produces<UserReadDto>(StatusCodes.Status200OK)
+                .ProducesProblem(StatusCodes.Status400BadRequest)
+                .ProducesProblem(StatusCodes.Status401Unauthorized)
+                .ProducesProblem(StatusCodes.Status404NotFound)
+                .ProducesProblem(StatusCodes.Status500InternalServerError)
+                .WithSummary("Auth by UserCode and Delete user by user Id.")
+                .WithDescription("Return removed user info.");
 
             return application;
         }
-
+       
         /// <summary>
         /// Method that handles get all Users in the Room logic.
         /// </summary>
@@ -129,5 +139,29 @@ namespace Epam.ItMarathon.ApiService.Api.Endpoints
                 ? result.Error.ValidationProblem()
                 : Results.Created(string.Empty, mapper.Map<UserCreationResponse>(result.Value));
         }
+        
+         
+        /// <summary>
+        /// Remove User by unique identifier logic.
+        /// </summary>
+        /// <param name="id">Unique identifier of the User.</param>
+        /// <param name="userCode">Admin authorization code.</param>
+        /// <param name="mediator">Implementation of <see cref="IMediator"/> for handling business logic.</param>
+        /// <param name="mapper">Implementation of <see cref="IMapper"/> for converting objects.</param>
+        /// <param name="cancellationToken"><see cref="CancellationToken"/> that can be used to cancel operation.</param>
+        /// <returns>Returns <seealso cref="IResult"/> depending on operation result.</returns>
+        public static async Task<IResult> DeleteUserWithId([FromRoute, Required] ulong id, [FromQuery, Required] string? userCode,
+            IMapper mapper, IMediator mediator, CancellationToken cancellationToken)
+        {
+            var result = await mediator.Send(new DeleteUserRequest(userCode!, id), cancellationToken);
+            if (result.IsFailure)
+            {
+                return result.Error.ValidationProblem();
+            }
+
+            var responseUser = mapper.Map<UserDeleteResponse>(result.Value);
+            return Results.Ok(responseUser);
+        }
+
     }
 }
