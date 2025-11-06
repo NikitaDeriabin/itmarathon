@@ -20,8 +20,13 @@ namespace Epam.ItMarathon.ApiService.Api.Dto.Mapping
                         DateTimeStyles.AdjustToUniversal | DateTimeStyles.AssumeUniversal
                     )));
 
-            CreateMap<Room, RoomReadDto>().ForMember(roomDto => roomDto.AdminId,
-                opt => opt.MapFrom(room => room.Users.First(user => user.IsAdmin).Id));
+            CreateMap<Room, RoomReadDto>()
+                .ForMember(roomDto => roomDto.AdminId,
+                    opt =>
+                    opt.MapFrom(room => room.Users.First(user => user.IsAdmin).Id)
+                )
+                .ForMember(roomDto => roomDto.GiftExchangeDate, opt =>
+                    opt.MapFrom(room => room.GiftExchangeDate.ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ssZ")));
 
             CreateMap<User, UserReadDto>()
                 .ForMember(dest => dest.UserCode, opt =>
