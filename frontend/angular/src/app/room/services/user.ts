@@ -43,6 +43,21 @@ export class UserService {
     );
   }
 
+  public deleteUser(id: number): Observable<HttpResponse<User>> {
+    return this.#apiService.deleteUserFromRoom(id, this.#userCode()).pipe(
+      tap(({ status }) => {
+        if (status === 200) {
+          this.#roomService.getRoomByUserCode(this.#userCode());
+          this.getUsers().subscribe();
+          this.#toasterService.show(
+            ToastMessage.SuccessUserDelete,
+            MessageType.Success
+          );
+        }
+      })
+    );
+  }
+
   public drawNames(): Observable<HttpResponse<string>> {
     return this.#apiService.drawNames(this.#userCode()).pipe(
       tap(({ status }) => {

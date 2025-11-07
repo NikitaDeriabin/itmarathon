@@ -32,6 +32,7 @@ import { UrlService } from '../core/services/url';
 import { NavigationLinkSegment } from '../app.enum';
 import { PersonalInfoModal } from './components/personal-info-modal/personal-info-modal';
 import { InvitationModal } from '../shared/components/invitation-modal/invitation-modal';
+import { User } from '../app.models';
 
 @Component({
   selector: 'app-room',
@@ -70,6 +71,7 @@ export class Room implements OnInit {
   public readonly isRandomizeCardDisabled = computed(
     () => this.users().length < MIN_USERS_NUMBER
   );
+  public readonly gifteeUser = computed(() => this.#getGiteeUser());
   public readonly gifteeName = computed(() => this.#getGifteeName());
   public readonly firstName = computed(
     () => this.currentUser()?.firstName ?? 'Participant'
@@ -118,10 +120,10 @@ export class Room implements OnInit {
     this.#modalService.openWithResult(
       GifteeInfoModal,
       {
-        personalInfo: getPersonalInfo(this.currentUser()),
+        personalInfo: getPersonalInfo(this.#getGiteeUser()),
         wishListInfo: {
-          interests: this.currentUser()?.interests || '',
-          wishList: this.currentUser()?.wishList || [],
+          interests: this.gifteeUser()?.interests || '',
+          wishList: this.gifteeUser()?.wishList || [],
         },
       },
       {
@@ -181,9 +183,13 @@ export class Room implements OnInit {
     );
   }
 
-  #getGifteeName(): string {
+  #getGiteeUser(): User | undefined {
     const gifteeId = this.#userService.currentUser()?.giftToUserId || 0;
-    const gifteeUser = this.users().find((user) => user.id === gifteeId);
+    return this.users().find((user) => user.id === gifteeId);
+  }
+
+  #getGifteeName(): string {
+    const gifteeUser = this.gifteeUser();
     const [firstName, lastName] = [gifteeUser?.firstName, gifteeUser?.lastName];
 
     return firstName && lastName ? `${firstName} ${lastName}` : '';

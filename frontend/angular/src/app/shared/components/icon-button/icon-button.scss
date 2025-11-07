@@ -37,18 +37,43 @@
     transition: all 0.3s;
   }
 
-  &:hover,
-  &:focus-visible {
-    fill: color.$icon-button-bg--primary-hover;
+  &--primary {
+    fill: color.$icon-button-bg--primary;
+
+    &:hover,
+    &:focus-visible {
+      fill: color.$icon-button-bg--primary-hover;
+    }
+
+    &:active {
+      fill: color.$icon-button-bg--primary-active;
+    }
   }
 
-  &:focus-visible {
-    outline: 1px solid color.$icon-button-outline;
-    border-radius: 2px;
+  &--secondary {
+    fill: color.$icon-button-bg--secondary;
+
+    &:hover,
+    &:focus-visible {
+      fill: color.$icon-button-bg--secondary-hover;
+    }
+
+    &:active {
+      fill: color.$icon-button-bg--secondary-active;
+    }
   }
 
-  &:active {
-    fill: color.$icon-button-bg--primary-active;
+  &--danger {
+    fill: color.$icon-button-bg--danger;
+
+    &:hover,
+    &:focus-visible {
+      fill: color.$icon-button-bg--danger-hover;
+    }
+
+    &:active {
+      fill: color.$icon-button-bg--danger-active;
+    }
   }
 
   &:disabled {

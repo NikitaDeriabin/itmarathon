@@ -34,4 +34,14 @@
       (click)="onInfoClick()"
     />
   }
+
+  @if (isCurrentUserAdmin() && !participant().isAdmin && !isRoomDrawn()) {
+    <app-icon-button
+      class="icon-delete-btn"
+      [iconName]="iconDelete"
+      [colorType]="iconDeleteColorType"
+      [ariaLabel]="ariaLabelDelete"
+      (click)="onDeleteClick()"
+    />
+  }
 </span>

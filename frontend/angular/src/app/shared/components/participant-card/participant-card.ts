@@ -16,6 +16,7 @@ import {
   NavigationLinkSegment,
   PersonalLink,
   PopupPosition,
+  IconButtonColorType,
 } from '../../../app.enum';
 import { PopupService } from '../../../core/services/popup';
 import { copyToClipboard } from '../../../utils/copy';
@@ -35,6 +36,8 @@ import type { User } from '../../../app.models';
 export class ParticipantCard {
   readonly participant = input.required<User>();
   readonly isCurrentUserAdmin = input.required<boolean>();
+
+  readonly isRoomDrawn = input.required<boolean>();
 
   readonly showCopyIcon = input<boolean>(false);
   readonly userCode = input<string>('');
@@ -58,6 +61,9 @@ export class ParticipantCard {
   public readonly ariaLabelCopy = AriaLabel.ParticipantLink;
   public readonly iconInfo = IconName.Info;
   public readonly ariaLabelInfo = AriaLabel.Info;
+  public readonly iconDelete = IconName.Delete;
+  public readonly ariaLabelDelete = AriaLabel.Delete;
+  public readonly iconDeleteColorType = IconButtonColorType.Danger;
 
   @HostBinding('tabindex') tab = 0;
   @HostBinding('class.list-row') rowClass = true;
@@ -102,6 +108,14 @@ export class ParticipantCard {
     }
 
     this.#showPopup();
+  }
+
+  public onDeleteClick(): void {
+    if (!this.isCurrentUserAdmin()) {
+      return;
+    }
+
+    this.#userService.deleteUser(this.participant().id).subscribe();
   }
 
   public onCopyHover(target: EventTarget | null): void {
