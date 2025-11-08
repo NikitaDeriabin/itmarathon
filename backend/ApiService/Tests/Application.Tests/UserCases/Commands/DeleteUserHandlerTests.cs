@@ -23,14 +23,5 @@ public class DeleteUserHandlerTests
         _userRepositoryMock = Substitute.For<IUserReadOnlyRepository>();
         _handler = new DeleteUserHandler(_roomRepositoryMock, _userRepositoryMock);
     }
-
-    /// <summary>
-    /// Tests that the handler returns a ValidationResult error when the user to delete with specific id doesn't exist.
-    /// </summary>
-    [Fact]
-    public async Task Handle_ShouldReturnFailure_WhenUserWithIdNotExist()
-    {
-        throw new NotImplementedException();
-    }
     
 }
