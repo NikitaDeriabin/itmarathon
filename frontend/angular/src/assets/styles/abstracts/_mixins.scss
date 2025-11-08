@@ -290,7 +290,11 @@
   }
 }
 
-@mixin modal-base-layout($modal-width: 1088px, $modal-content-padding: 40px) {
+@mixin modal-base-layout(
+  $modal-width: 1088px,
+  $modal-content-padding: 40px,
+  $modal-content-gap: 48px
+) {
   position: absolute;
   max-height: 70vh;
   width: $modal-width;
@@ -325,7 +329,7 @@
     display: flex;
     flex-direction: column;
     flex: 1 1 auto;
-    gap: 48px;
+    gap: $modal-content-gap;
     padding: 0 $modal-content-padding $modal-content-padding;
     background: $modal-content-bg;
     width: 100%;

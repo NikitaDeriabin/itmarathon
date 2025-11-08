@@ -26,6 +26,7 @@ import { ModalService } from '../../../core/services/modal';
 import { getPersonalInfo } from '../../../utils/get-personal-info';
 import { UserService } from '../../../room/services/user';
 import type { User } from '../../../app.models';
+import { ParticipantDeleteConfirmModal } from '../../../room/components/participant-delete-confirm-modal/participant-delete-confirm-modal';
 
 @Component({
   selector: 'li[app-participant-card]',
@@ -115,7 +116,20 @@ export class ParticipantCard {
       return;
     }
 
-    this.#userService.deleteUser(this.participant().id).subscribe();
+    this.#modalService.openWithResult(
+      ParticipantDeleteConfirmModal,
+      {
+        fullName: this.fullName(),
+      },
+      {
+        confirmButtonAction: () => {
+          this.#userService.deleteUser(this.participant().id).subscribe();
+          this.#modalService.close();
+        },
+        cancelButtonAction: () => this.#modalService.close(),
+        closeModal: () => this.#modalService.close(),
+      }
+    );
   }
 
   public onCopyHover(target: EventTarget | null): void {

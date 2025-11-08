@@ -173,6 +173,7 @@ export const enum ButtonText {
   ViewWishlist = 'View Wishlist',
   Cancel = 'Cancel',
   ViewInformation = 'View Information',
+  Confirm = 'Confirm',
 }
 
 export const enum ButtonType {
@@ -301,6 +302,7 @@ export const enum ModalTitle {
   ParticipantDetails = 'Participant Details',
   PersonalInformation = 'Personal Information',
   Invitation = 'Invite New Members',
+  AreYouSure = 'Are you sure?',
 }
 
 export const enum ModalSubtitle {
