@@ -46,8 +46,12 @@ name_prefix       = "app"
 project_name      = "app"
 alb_ingress_cidr  = ["0.0.0.0/0"]
 alb_ingress_ports = [80, 8080, 443]
+alb_ingress_ports = [80, 8080, 443]
 web_backend_port  = 8080
 web_ui_port       = 80
+prometheus_port   = 9090
+grafana_port      = 3001
+node_exporter_port = 9100
 prometheus_port   = 9090
 grafana_port      = 3001
 node_exporter_port = 9100
@@ -58,6 +62,7 @@ node_exporter_port = 9100
 #Amazon Linux 2023 AMI 2023.8.20250808.1 x86_64 HVM kernel-6.1 in eu-central-1
 
 ami          = "ami-015cbce10f839bd0c"
+ec2_name_set = ["react", "angular", "dotnet", "prometheus", "grafana"]
 ec2_name_set = ["react", "angular", "dotnet", "prometheus", "grafana"]
 subnet       = ""
 sgs          = []
