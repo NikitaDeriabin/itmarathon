@@ -1,0 +1,19 @@
+<app-confirmation-modal-layout-with-header
+  [headerPictureName]="pictureName"
+  [headerTitle]="title"
+  [buttonText]="confirmButtonText"
+  [confirmButtonText]="confirmButtonText"
+  [cancelButtonText]="cancelButtonText"
+  (confirmButtonAction)="onConfirmButtonAction()"
+  (cancelButtonAction)="onCancelButtonAction()"
+  (closeModal)="onCloseModal()"
+>
+  <div class="modal__content">
+    <section class="modal__content-item">
+      <p class="modal__message">
+        Do you really want to remove <br />
+        <span class="modal__fullname"> {{ fullName() }} </span> from this room?
+      </p>
+    </section>
+  </div>
+</app-confirmation-modal-layout-with-header>

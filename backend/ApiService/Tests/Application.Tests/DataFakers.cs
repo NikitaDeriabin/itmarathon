@@ -137,9 +137,9 @@ namespace Epam.ItMarathon.ApiService.Application.Tests
         public static TheoryData<DateTime> InvalidGiftExchangeDates =>
         [
             DateTime.MinValue, // Empty/default value
-            DateTime.Today.AddDays(-1), // Yesterday
-            DateTime.Today.AddDays(-7), // A week ago 
-            new(2000, 1, 1), // Arbitrary past date
+            DateTime.UtcNow.AddDays(-1), // Yesterday
+            DateTime.UtcNow.AddDays(-7), // A week ago 
+            new DateTime(2000, 1, 1), // Arbitrary past date
         ];
     }
 }

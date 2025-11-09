@@ -55,6 +55,21 @@ export class ApiService {
     );
   }
 
+  public deleteUserFromRoom(
+    userId: number,
+    userCode: string // Admin authorization code
+  ): Observable<HttpResponse<User>> {
+    const params = new HttpParams().set('userCode', userCode);
+
+    return this.#http.delete<User>(
+      `${this.#baseUrl}${Endpoint.users}/${userId}`,
+      {
+        params,
+        observe: 'response',
+      }
+    );
+  }
+
   public getRoomByUserCode(
     userCode: string
   ): Observable<HttpResponse<RoomDetails>> {

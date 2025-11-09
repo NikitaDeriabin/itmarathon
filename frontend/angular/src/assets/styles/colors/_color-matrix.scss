@@ -2,6 +2,7 @@
 
 $base-font-color: $g-800;
 $base-heading-color: $g-950;
+$danger-font-color: $red-500;
 
 $base-shadow-color: $black;
 
@@ -12,6 +13,10 @@ $icon-button-bg--primary-active: $green-700;
 $icon-button-bg--secondary: $g-100;
 $icon-button-bg--secondary-hover: $g-50;
 $icon-button-bg--secondary-active: $g-100;
+
+$icon-button-bg--danger: $red-500;
+$icon-button-bg--danger-hover: $red-600;
+$icon-button-bg--danger-active: $red-warning;
 
 $icon-button-bg--disabled: $g-600;
 

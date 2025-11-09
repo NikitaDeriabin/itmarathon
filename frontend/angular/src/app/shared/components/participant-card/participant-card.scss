@@ -28,7 +28,7 @@
     }
   }
 
-  app-icon-button:not(:first-child) {
+  app-icon-button:not(:first-child):not(.icon-delete-btn) {
     position: relative;
     &::before {
       content: '';
