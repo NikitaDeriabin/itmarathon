@@ -33,15 +33,22 @@
       [ariaLabel]="ariaLabelInfo"
       (click)="onInfoClick()"
     />
-  }
 
-  @if (isCurrentUserAdmin() && !participant().isAdmin && !isRoomDrawn()) {
-    <app-icon-button
-      class="icon-delete-btn"
-      [iconName]="iconDelete"
-      [colorType]="iconDeleteColorType"
-      [ariaLabel]="ariaLabelDelete"
-      (click)="onDeleteClick()"
-    />
+    @if (!isRoomDrawn()) {
+      <app-icon-button
+        class="icon-delete-btn"
+        [iconName]="iconDelete"
+        [colorType]="iconDeleteColorType"
+        [ariaLabel]="ariaLabelDelete"
+        (click)="onDeleteClick()"
+      />
+    } @else {
+      <app-icon-button
+        class="icon-delete-btn"
+        [iconName]="iconDelete"
+        [isButtonDisabled]="!!isRoomDrawn"
+        [ariaLabel]="ariaLabelDelete"
+      />
+    }
   }
 </span>
